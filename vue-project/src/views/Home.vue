@@ -1,15 +1,36 @@
 <template>
-  <div class="home">
+  <div class="text-center">
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <template v-slot:activator="{ on }">
+        <v-btn
+          color="red lighten-2"
+          dark
+          v-on="on"
+        >
+          Login
+        </v-btn>
+      </template>
 
+      <Login />
+    </v-dialog>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+import Login from '../components/Login.vue'
 
 export default {
-  name: "home",
+  name: 'Home',
   components: {
+    Login
+  },
+  data() {
+    return {
+      dialog: false
+    }
   }
-};
+}
 </script>
