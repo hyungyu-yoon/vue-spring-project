@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-content>
-      <Home></Home>
+      <Home />
     </v-content>
   </v-app>
 </template>
@@ -18,5 +18,5 @@ export default {
   data: () => ({
     //
   }),
-};
+}
 </script>
