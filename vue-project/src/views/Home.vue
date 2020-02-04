@@ -14,7 +14,7 @@
         </v-btn>
       </template>
 
-      <Login />
+      <Login :dialog="dialog" />
     </v-dialog>
   </div>
 </template>

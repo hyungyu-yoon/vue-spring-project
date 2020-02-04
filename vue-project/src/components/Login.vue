@@ -15,17 +15,20 @@
             cols="12"
           >
             <v-text-field
+              v-model="username"
               label="아이디"
               prepend-inner-icon="fas fa-user"
               outlined
               :rules="rules"
               counter="20"
+              maxlength="20"
             />
             <v-text-field
+              v-model="password"
               label="비밀번호"
               prepend-inner-icon="fas fa-lock"
               outlined
-              :rules="rules"
+              type="password"
             />
             
             <v-btn
@@ -33,6 +36,7 @@
               x-large
               dark
               color="blue"
+              @click="login"
             >
               Login
             </v-btn>
@@ -40,9 +44,7 @@
           <v-col
             cols="8"
           >
-            <p>
-              회원이 아니신가요? <a>회원가입</a>
-            </p>
+            회원이 아니신가요? <a>회원가입</a>
           </v-col>
           <v-col
             cols="4"
@@ -78,26 +80,48 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
+  props: {
+    dialog: {type: Boolean}
+  },
   data (){
     return {
+      username: '',
+      password: '',
       rules: [
-        value => !!value || 'Required.',
+        
         value => this.idCheck(value) || '아이디는 소문자와 숫자의 조합으로 해주세요',
-      ],
+      ]
+    
+    }
+  },
+  watch : {
+    dialog () {
+      this.username = ''
+      this.password = ''
     }
   },
   methods: {
     idCheck(value){
+      if(value === ''){
+        return true
+      }
       const idReg = /[a-z0-9]{5,19}$/g
       
       if(idReg.test(value)){
-        console.log('test 성공')
         return true
       }else{
-        console.log('테스트 실패')
+        return false
       }
 
+    },
+    login(){
+      axios.get('http://localhost:8081/hello')
+      .then(response => {
+        console.log(response.data)
+      })
     }
   }
 
