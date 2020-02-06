@@ -11,7 +11,7 @@
 				<v-row>
 					<v-col cols="12">
 						<v-text-field
-							v-model="username"
+							v-model="user.username"
 							label="아이디"
 							prepend-inner-icon="fas fa-user"
 							outlined
@@ -20,14 +20,14 @@
 							maxlength="20"
 						/>
 						<v-text-field
-							v-model="password"
+							v-model="user.password"
 							label="비밀번호"
 							prepend-inner-icon="fas fa-lock"
 							outlined
 							type="password"
 						/>
 
-						<v-btn block x-large dark color="blue" @click="login">Login</v-btn>
+						<v-btn block x-large dark color="blue" @click="submit">Login</v-btn>
 					</v-col>
 					<v-col cols="8">
 						회원이 아니신가요?
@@ -52,26 +52,27 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
 	props: {
 		dialog: { type: Boolean },
 	},
 	data() {
 		return {
-			username: '',
-			password: '',
+			user: {
+				username: '',
+				password: '',
+			},
 			rules: [
 				value =>
-					this.idCheck(value) || '아이디는 소문자와 숫자의 조합으로 해주세요',
+					this.idCheck(value) ||
+					'아이디는 5자이상 소문자와 숫자의 조합으로 해주세요',
 			],
 		}
 	},
 	watch: {
 		dialog() {
-			this.username = ''
-			this.password = ''
+			this.user.username = ''
+			this.user.password = ''
 		},
 	},
 	methods: {
@@ -80,17 +81,10 @@ export default {
 				return true
 			}
 			const idReg = /[a-z0-9]{5,19}$/g
-
-			if (idReg.test(value)) {
-				return true
-			} else {
-				return false
-			}
+			return idReg.test(value)
 		},
-		login() {
-			axios.get('http://localhost:8081/hello').then(response => {
-				console.log(response.data)
-			})
+		submit() {
+			this.$store.dispatch('login', this.user)
 		},
 	},
 }
